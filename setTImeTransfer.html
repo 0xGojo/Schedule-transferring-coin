@@ -453,7 +453,7 @@
                                 }
                             } catch(err)
                             {
-                                balance_of[wallet_address] += arweave.ar.winstonToAr(temp.transaction_unsigned.quantity); 
+                                balance_of[wallet_address] += (temp.transaction_unsigned.quantity / decimal).toFixed(12); 
                                 document.getElementById("Available-balance").innerText="YOUR AVAILABLE BALANCE : " + balance_of[wallet_address] + " AR";
                                 document.getElementById("Spending").innerText="SPENDING : " + (Number.parseFloat(wallet_balance) - balance_of[wallet_address]).toFixed(12) + " AR";
                                 document.getElementById(temp.id + "-status").innerHTML = "failed";
