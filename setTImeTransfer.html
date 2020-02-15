@@ -290,7 +290,7 @@
                                         document.getElementById('note-msg').style.display = 'block';
                                         document.getElementById('github').style.display = 'none';
                                         document.getElementById("Available-balance").innerText="YOUR AVAILABLE BALANCE: " + wallet_balance + " AR";
-                                        document.getElementById("Spending").innerText='SPENDING: ' + wallet_balance - balance_of[wallet_address] + ' AR';
+                                        document.getElementById("Spending").innerText='SPENDING: ' + (parseFloat(wallet_balance) - balance_of[wallet_address]) + ' AR';
                                         // call to list transaction history
                                         listAccountHistory();
                                     } catch(err) 
@@ -366,12 +366,12 @@
                     balance_of[wallet_address] -= total_to_send;
                     document.getElementById("Available-balance").innerText="YOUR AVAILABLE BALANCE : " + balance_of[wallet_address].toFixed(12) + " AR";
                     document.getElementById("Spending").innerText="SPENDING : " + (wallet_balance - balance_of[wallet_address]).toFixed(12) + " AR";
-                    createNewTransansactionWithTime(to, amount, time);
+                    createNewTransansactionWithTime(to, amount, time, total_to_send);
                 }
                 clicked = false;
             }
 
-            function createNewTransansactionWithTime(to, amount, time) 
+            function createNewTransansactionWithTime(to, amount, time, total) 
             {
                 try 
                 {
@@ -384,6 +384,7 @@
                             transaction_unsigned: transaction,
                             tx_hash: '',
                             time_to_send: time,
+                            total: total,
                             status: "pending",
                             id: wallet_address + (transactions[wallet_address] === undefined ? 0 : transactions[wallet_address].length)
                         };
@@ -453,7 +454,7 @@
                                 }
                             } catch(err)
                             {
-                                balance_of[wallet_address] += (parseFloat(temp.transaction_unsigned.quantity) / decimal); 
+                                balance_of[wallet_address] += temp.total; 
                                 document.getElementById("Available-balance").innerText="YOUR AVAILABLE BALANCE : " + balance_of[wallet_address] + " AR";
                                 document.getElementById("Spending").innerText="SPENDING : " + (wallet_balance - balance_of[wallet_address]).toFixed(12) + " AR";
                                 document.getElementById(temp.id + "-status").innerHTML = "failed";
