@@ -1,0 +1,438 @@
+<style>
+    body {
+        background-color:white;
+        font-family: Lucida Console;
+        padding:10px;
+    }
+
+    .page-2 {
+        display: none;
+    }
+    
+    .sponsor {
+        display: flex;
+        align-items:center;
+    }
+    .sponsor-name {
+        font-family: Lucida Console;
+        font-size: medium;
+        text-decoration: none;
+    }
+
+    .slogan {
+        margin-top: 10%;
+    }
+
+    .github-icon {
+        position: absolute;
+        bottom:0px;
+    }
+
+    .uploadfile {
+        background-color:white;
+        font-size:16px;
+        padding: 50px 80px;
+        border: dashed 2px black;
+        border-radius: 10px;
+        color:black;
+        font-family: Lucida Console;    
+    }
+
+    .getfree {
+        width:160px;
+        font-size:14px;
+        padding: 8px;
+        border: solid 2px black;
+        border-radius: 10px;
+        color:black;
+    }
+
+    th, td {
+        padding-left: 25px;
+        text-align: left;
+    }
+
+    .err {
+        color: #ee0000;
+    }
+
+    .success {
+        color: green;
+    }
+
+    .success-msg,
+    .error-msg,
+    .warning-msg,
+    .note-msg {
+        align-self: center;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 3px 3px 3px 3px;
+    }
+
+    .success-msg {
+        color: #270;
+        background-color: #DFF2BF;
+    }
+
+    .error-msg {
+        color: #D8000C;
+        background-color: #FFBABA;
+    }  
+
+    .warning-msg,
+    .note-msg {
+        color: #9F6000;
+        background-color: #FEEFB3;
+    }
+
+    .success {
+        color: #270;
+    }
+
+    .failed {
+        color: #D8000C;
+    }
+
+    .pending {
+        color: #9F6000;
+    }
+
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Arweave Timer</title>
+        <script src="https://unpkg.com/arweave/bundles/web.bundle.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <div class="sponsor">
+            <a class="logo" href="https://www.arweave.org/"><img width="30" height="30" src="https://unpkg.com/cryptoicons-cdn/images/AR.png"></a>
+            <a class="sponsor-name" href="https://www.arweave.org/">ARWEAVE</a>
+        </div>
+
+        <center><div class="warning-msg" id="warning-msg" style="display: none; width: 50%;"></div></center>
+        <center><div class="success-msg" id="success-msg" style="display: none; width: 50%;"></div></center>
+        <center><div class="error-msg" id="error-msg" style="display: none; width: 50%;"></div></center>
+        <center><div class="note-msg" id="note-msg" style="display: none; width: 60%;"><b>Note</b>: One time slot only let one transaction time set for one address. <br> The minimum distance time between yor transaction time sets must be 5 minuets or can be <b>failed</b></div></center>
+
+        <div class="page-1" id="page-1">
+            <div class="login" id="login">
+                <input type="file" accept=".JSON,.json" id="uploadwallet" onsubmit="openwallet()" style="display: none;"/>
+                <center><input type="button" class="uploadfile" id="file" name="uploadDompet" value="Click To Import Wallet" onclick="loadwallet()"/></center>
+                <br /><br /><br /><br /><br />
+                <center><a href="https://tokens.arweave.org/" class="getfree">Get Free Token</a></center>
+            </div>
+
+            <div class="slogan" id="slogan">
+                <center><div class="title">SCHEDULE TIME TO TRANSFER COIN</div></center>
+                <center><div class="sub-title">ARWEAVE BOUNTY</div></center>
+                <br /><br /><br />  
+            </div>
+
+            <div id="github">
+                <!-- move to project link -->
+                <center>
+                <a class="github-icon" href="https://github.com/" aria-label="Homepage" data-ga-click="(Logged out) Header, go to homepage, icon:logo-wordmark">
+                    <svg height="48" viewBox="0 0 16 16" version="1.1" width="48" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                </a>
+                </center>
+            </div>
+        </div>
+
+        <div class="page-2" id="page-2">
+            <center><strong><div style="font-size:22px" id="Available-balance"></div></strong></center><br />
+            <center><strong><div style="font-size:22px" id="Spending"></div></strong></center><br />
+            <center><input id="addTimer" type="image" src="https://cdn1.iconfinder.com/data/icons/materia-basic-vol-1/24/009_042_alarm_add_clock-512.png" style="height: 64px; width: 64px; padding-bottom: 15px;" onclick="displayform()" /></center>
+            <center>
+                <table style="width:90%" id="tabletimetransfer">
+                    <tr>
+                        <th style="width: 35%;">To</th>
+                        <th style="width: 14%;">Amount</th>
+                        <th style="width: 9%;">Time</th>
+                        <th style="width: 7%;">status</th>
+                        <th style="width: 35%;">txid</th>
+                    </tr>
+                    <tr id="transfer-form" style="display: none;">  
+                        <td><input style="width: 100%;" name="to" id="address" type="text" required/></td>
+                        <td><input style="width: 100%;" name="amount" id="amount" type="number" min="0" required placeholder="AR unit"/></td> 
+                        <td><input style="width: 100%;" name="time_to_transfer" id="time" type="datetime-local" required/></td>
+                        <td><button id="cancel_set_Time" onclick="cancel()">Cancel</button> <br>
+                        <input type="submit" value="Submit" id="submit_time_transfer" onclick="submitTimeTransfer()"></td>
+                    </tr>
+                </table>
+            </center>
+        </div>
+
+        <center><div></div></center>
+
+        <script>
+            const arweave = Arweave.init({host:"arweave.net",port:443,logging:!0,protocol:"https"});
+            var balance_of = {};
+            var time_slot = {};
+            var wallet;
+            var wallet_address;
+            var wallet_balance;
+            var pending_transaction = {};
+            var transactions = {};
+            var decimal = 1000000000000;
+            var round_minute = 60000;
+            var clicked = false;
+
+            // Show account's transaction history
+            function listAccountHist()
+            {
+                if(transactions[wallet_address] !== undefined) 
+                {
+                    let table_content = document.getElementById("tabletimetransfer").innerHTML;
+                    for(let i = 0; i < transactions[wallet_address].length; i++)
+                    {
+                        let data = '<tr>' + transactions[wallet_address][i].transaction_unsigned.target + '</tr>';
+                        data += '<tr>' + (transactions[wallet_address][i].transaction_unsigned.quantity / decimal) + '</tr>';
+                        data += '<tr>' + transactions[wallet_address][i].time + '</tr>';
+                        data += '<tr class=' + transactions[wallet_address][i].status + ' id=' + transactions[wallet_address][i].id + '-status' + '>' + transactions[wallet_address][i].status + '</tr>';
+                        data += '<tr id=' + transactions[wallet_address][i].id + '>' + transactions[wallet_address][i].tx_hash + '</tr>';
+                        table_content += '<tr>' + data + '</tr>';
+                    }
+                    document.getElementById("tabletimetransfer").innerHTML = table_content;
+                }
+            }
+
+
+            function openwallet() 
+            {
+                const input = document.querySelector('input[type="file"]');
+                if (input) 
+                {
+                    input.addEventListener('change', function () 
+                    {
+                        const reader = new FileReader();
+                        reader.addEventListener('load', function(e) 
+                        {
+                            wallet = e.target.result;
+                        });
+                        reader.onload = function() {
+                            wallet = JSON.parse(wallet);
+                            arweave.wallets.jwkToAddress(wallet).then((address) => {
+                                wallet_address = address;
+                                arweave.wallets.getBalance(wallet_address).then((balance) => {
+                                    try 
+                                    {
+                                        if (balance_of[wallet_address] != undefined) 
+                                        {
+                                            wallet_balance = balance_of[wallet_address]
+                                        } else 
+                                        { 
+                                            wallet_balance = arweave.ar.winstonToAr(balance);
+                                            balance_of[wallet_address] = arweave.ar.winstonToAr(balance);
+                                        }
+                                        document.getElementById('page-1').style.display = 'none';
+                                        document.getElementById('page-2').style.display = 'block';
+                                        document.getElementById('note-msg').style.display = 'block';
+                                        document.getElementById("Available-balance").innerText="YOUR AVAILABLE BALANCE: " + wallet_balance + " AR";
+                                        document.getElementById("Spending").innerText='SPENDING: ' + (Number.parseFloat(wallet_balance) - balance_of[wallet_address]) + ' AR';
+                                        // call to list transaction history
+                                        listAccountHist();
+                                    } catch(err) 
+                                    {
+                                        console.log(err);
+                                    }
+
+                                });
+                            });
+                        }
+                        reader.readAsText(input.files[0]);
+
+                    }, false);
+                }
+            }
+            
+            function loadwallet () 
+            {
+                $("#uploadwallet").click();
+                openwallet();
+            }
+            
+            async function submitTimeTransfer()
+            {   
+                var to = document.getElementById("address").value;
+                var amount = Number(document.getElementById("amount").value);
+                var time = document.getElementById("time").value;
+                
+
+                if (to == '' || amount == '' || time == '') 
+                {
+                    showMessage("error-msg", "You must fully fill the form and right type for each box!");
+                    return;
+                } 
+                var validAmount = /^\d+(?:\.\d+)?$/;
+                if (to.length != 43 || !validAmount.test(amount)) 
+                {
+                    showMessage("error-msg", "Invalid address, amount. Please check again format of address and amount!");
+                    return;
+                }
+                if(Date.parse(time) == NaN || Date.parse(time) < Date.now()) 
+                {
+                    showMessage("error-msg", "Invalid Date and Time. Your time must be right format and greater than time now!");
+                    return;
+                }
+
+                // limit 5 transaction for one slot of time
+                if(time_slot[Date.parse(time)] != undefined && time_slot[Date.parse(time)].length > 5) 
+                {
+                    showMessage("warning-msg", "Sorry for this unconvinient. This time slot is full, please choose different time. Thank you!");
+                    return;
+                }
+
+                if(clicked) {
+                    return;
+                }
+                clicked = true;
+                
+                var response = await fetch('https://arweave.net/price/0/'+to+'/');
+                var data = await response.text()
+                var wiston = (data / decimal);
+                var total_to_send = wiston + amount;
+                if(total_to_send > balance_of[wallet_address])
+                {
+                    showMessage("error-msg", "Your account balance is insufficient!");   
+                    clicked = false;
+                    return;
+                }
+                document.getElementById("error-msg").style.display = "none"; 
+                var result = confirm("Send to: " + to + "\n Amount: " + amount + "\n Time: " + time); 
+                if (result == true) 
+                {
+                    balance_of[wallet_address] -= total_to_send;
+                    document.getElementById("Available-balance").innerText="YOUR AVAILABLE BALANCE : " + balance_of[wallet_address] + " AR";
+                    document.getElementById("Spending").innerText="SPENDING : " + (Number.parseFloat(wallet_balance) - balance_of[wallet_address]).toFixed(12) + " AR";
+                    await createNewTransansactionWithTime(to, amount, time);
+                }
+                clicked = false;
+            }
+
+            async function createNewTransansactionWithTime(to, amount, time) 
+            {
+                try 
+                {
+                    let transaction = {
+                        target: to,
+                        quantity: arweave.ar.arToWinston(amount)
+                    }
+                    
+                    var pending_transaction = {
+                            transaction_unsigned: transaction,
+                            tx_hash: '',
+                            time_to_send: time,
+                            status: "pending",
+                            id: wallet_address + (transactions[wallet_address] === undefined ? 0 : transactions[wallet_address].length)
+                        };
+
+                    if (transactions[wallet_address] === undefined) 
+                    {
+                        transactions[wallet_address] = [pending_transaction];
+                    } else 
+                    {
+                        transactions[wallet_address].push(pending_transaction)
+                    }
+                    console.log("request time: ", time);
+                    console.log(transactions[wallet_address]);
+                    if (time_slot[Date.parse(time)] === undefined) 
+                    {
+                        time_slot[Date.parse(time)] = [pending_transaction];
+                    } else 
+                    {
+                        time_slot[Date.parse(time)].push(pending_transaction)
+                    }
+                    showMessage("success-msg", "You created transaction successfully!");
+                    let table_content = document.getElementById("tabletimetransfer").innerHTML;
+                    let data = '<td>' + to + '</td>';
+                    data += '<td>' + amount + '</td>';
+                    data += '<td>' + time + '</td>';
+                    data += '<td class=' + 'pending' + ' id=' + pending_transaction.id + '-status' + '>' + 'pending' + '</td>';
+                    data += '<td id=' + pending_transaction.id + '-txhash' + '>' + '' + '</td>';
+                    table_content += '<tr>' + data + '</tr>';
+                    document.getElementById("tabletimetransfer").innerHTML = table_content;
+                } catch(err) 
+                {
+                    console.log(err)
+                }
+            }
+
+            async function transferCoin()
+            {
+                setInterval(async function ()
+                {  
+                    var time_now = Date.now() - Date.now() % round_minute;
+                    if (time_slot[time_now] != undefined)
+                    {
+                        // tried to work on multiple pending transactions at once. But still looking solution.
+                        for(let i = 0; i < time_slot[time_now].length; i++) 
+                        {  
+                            try 
+                            {
+                                var temp = time_slot[time_now][i];
+                                console.log(time_now);
+                                console.log("query recod", temp);
+                                let transaction = await arweave.createTransaction(
+                                    {
+                                        target: temp.transaction_unsigned.target,
+                                        quantity: temp.transaction_unsigned.quantity
+                                    }, wallet
+                                );
+                                await arweave.transactions.sign(transaction, wallet);
+                                let response = await arweave.transactions.post(transaction);
+                                console.log(response);
+                                if(response.status == 200) 
+                                {
+                                    temp.tx_hash = transaction.id;
+                                    temp.status = "success";
+                                    document.getElementById(temp.id + "-txhash").innerHTML = temp.tx_hash;                            
+                                    document.getElementById(temp.id + "-status").innerHTML = "success";
+                                    document.getElementById(temp.id + "-status").style.color = "#7fff00"
+                                } else 
+                                {
+                                    throw(response.data);
+                                }
+                            } catch(err)
+                            {
+                                document.getElementById(temp.id + "-status").innerHTML = "failed";
+                                document.getElementById(temp.id + "-status").style.color = "#ff0000"
+                                temp.status = "failed";  
+                                console.log(err)
+                            }
+                        }
+                    }
+                }, 60000);
+            }
+
+            function showMessage(type, message) 
+            {
+                document.getElementById(type).style.display = "block";
+                document.getElementById(type).innerHTML = message;
+                setTimeout(function()
+                        {
+                            document.getElementById(type).style.display = "none";
+                        }, 4000);
+            }
+
+            function displayform()
+            {
+                document.getElementById('transfer-form').style.display = "table-row";
+            }
+
+            function cancel()
+            {
+                document.getElementById('transfer-form').style.display = "none";
+            }
+
+            // cron job run for every 1 minute       
+            transferCoin();
+        </script>
+    </body>
+</html>
