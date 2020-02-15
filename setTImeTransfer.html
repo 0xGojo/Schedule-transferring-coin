@@ -171,7 +171,7 @@
         <center><div class="warning-msg" id="warning-msg" style="display: none; width: 50%;"></div></center>
         <center><div class="success-msg" id="success-msg" style="display: none; width: 50%;"></div></center>
         <center><div class="error-msg" id="error-msg" style="display: none; width: 50%;"></div></center>
-        <center><div class="note-msg" id="note-msg" style="display: none; width: 60%;"><b>Note</b>: One time slot only let one transaction time set for one address. <br> The minimum distance time between yor transaction time sets must be 5 minutes or can be <b>failed</b></div></center>
+        <center><div class="note-msg" id="note-msg" style="display: none; width: 60%;"><b>Note</b>: One time slot only let one transaction time set for one address. <br> The minimum distance time between yor transaction time sets must be 5 minutes or can be <b>failed</b> (cause time for block confirmation)</div></center>
 
         <div class="page-1" id="page-1">
             <div class="slogan" id="slogan">
@@ -282,15 +282,15 @@
                                             wallet_balance = balance_of[wallet_address]
                                         } else 
                                         { 
-                                            wallet_balance = arweave.ar.winstonToAr(balance);
-                                            balance_of[wallet_address] = arweave.ar.winstonToAr(balance);
+                                            wallet_balance = Number.parseFloat(arweave.ar.winstonToAr(balance));
+                                            balance_of[wallet_address] = Number.parseFloat(arweave.ar.winstonToAr(balance));
                                         }
                                         document.getElementById('page-1').style.display = 'none';
                                         document.getElementById('page-2').style.display = 'block';
                                         document.getElementById('note-msg').style.display = 'block';
                                         document.getElementById('github').style.display = 'none';
                                         document.getElementById("Available-balance").innerText="YOUR AVAILABLE BALANCE: " + wallet_balance + " AR";
-                                        document.getElementById("Spending").innerText='SPENDING: ' + (Number.parseFloat(wallet_balance) - balance_of[wallet_address]) + ' AR';
+                                        document.getElementById("Spending").innerText='SPENDING: ' + wallet_balance - balance_of[wallet_address] + ' AR';
                                         // call to list transaction history
                                         listAccountHistory();
                                     } catch(err) 
@@ -364,8 +364,8 @@
                 if (result == true) 
                 {
                     balance_of[wallet_address] -= total_to_send;
-                    document.getElementById("Available-balance").innerText="YOUR AVAILABLE BALANCE : " + balance_of[wallet_address] + " AR";
-                    document.getElementById("Spending").innerText="SPENDING : " + (Number.parseFloat(wallet_balance) - balance_of[wallet_address]).toFixed(12) + " AR";
+                    document.getElementById("Available-balance").innerText="YOUR AVAILABLE BALANCE : " + balance_of[wallet_address].toFixed(12) + " AR";
+                    document.getElementById("Spending").innerText="SPENDING : " + (wallet_balance - balance_of[wallet_address]).toFixed(12) + " AR";
                     createNewTransansactionWithTime(to, amount, time);
                 }
                 clicked = false;
@@ -453,9 +453,9 @@
                                 }
                             } catch(err)
                             {
-                                balance_of[wallet_address] += (temp.transaction_unsigned.quantity / decimal).toFixed(12); 
+                                balance_of[wallet_address] += (parseFloat(temp.transaction_unsigned.quantity) / decimal); 
                                 document.getElementById("Available-balance").innerText="YOUR AVAILABLE BALANCE : " + balance_of[wallet_address] + " AR";
-                                document.getElementById("Spending").innerText="SPENDING : " + (Number.parseFloat(wallet_balance) - balance_of[wallet_address]).toFixed(12) + " AR";
+                                document.getElementById("Spending").innerText="SPENDING : " + (wallet_balance - balance_of[wallet_address]).toFixed(12) + " AR";
                                 document.getElementById(temp.id + "-status").innerHTML = "failed";
                                 document.getElementById(temp.id + "-status").style.color = "#ff0000"
                                 temp.status = "failed";  
