@@ -1,6 +1,6 @@
 <style>
     body {
-        background-color:white;
+        background: linear-gradient(to right, rgb(187, 210, 197), rgb(83, 105, 118));
         font-family: Lucida Console;
         padding:10px;
     }
@@ -29,22 +29,60 @@
     }
 
     .uploadfile {
-        background-color:white;
-        font-size:16px;
-        padding: 50px 80px;
-        border: dashed 2px black;
-        border-radius: 10px;
-        color:black;
-        font-family: Lucida Console;    
+        width: 100px;
+        color: #fff !important;
+        text-transform: uppercase;
+        text-decoration: none;
+        background: #60a3bc;
+        padding: 20px;
+        border-radius: 50px;
+        display: inline-block;
+        border: none;
+        transition: all 0.4s ease 0s;
+        margin-bottom: 10px;
+    }
+
+    .uploadfile:hover {
+        text-shadow: 0px 0px 6px rgba(255, 255, 255, 1);
+        -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        transition: all 0.4s ease 0s;
+    }
+
+    .title {
+        color: #b58608; 
+        font-family: 'Droid serif', serif; 
+        font-size: 36px; 
+        font-weight: 400; 
+        font-style: italic; 
+        line-height: 44px; 
+        margin: 0 0 12px; 
+        text-align: center;
+    }
+
+    .sub-title,
+    #Available-balance, 
+    #Spending {
+        color: #a7e8f8; 
+        font-family: 'Julius Sans One', sans-serif; 
+        font-size: 22px; 
+        font-weight: bold; 
+        line-height: 32px; 
+        text-shadow: 1px 1px 1px #082b34;
     }
 
     .getfree {
-        width:160px;
-        font-size:14px;
-        padding: 8px;
-        border: solid 2px black;
-        border-radius: 10px;
-        color:black;
+        margin: 10px 10px 0;
+    }
+
+    #tabletimetransfer input, select {
+        width: 100%;
+        padding: 6px 10px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
     }
 
     th, td {
@@ -58,6 +96,21 @@
 
     .success {
         color: green;
+    }
+
+    .button-transfer {
+        color: white;
+        border-radius: 4px;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    }
+
+    #button-submit {
+        background: rgb(28, 184, 65); /* this is a green */
+    }
+
+    #button-cancel {
+        margin-top: 5px;
+        background: rgb(202, 60, 60); /* this is a maroon */
     }
 
     .success-msg,
@@ -106,10 +159,9 @@
     <head>
         <meta charset="UTF-8">
         <title>Arweave Timer</title>
-        <script src="https://unpkg.com/arweave/bundles/web.bundle.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://unpkg.com/arweave/bundles/web.bundle.js"></script>
     </head>
-
     <body>
         <div class="sponsor">
             <a class="logo" href="https://www.arweave.org/"><img width="30" height="30" src="https://unpkg.com/cryptoicons-cdn/images/AR.png"></a>
@@ -119,26 +171,26 @@
         <center><div class="warning-msg" id="warning-msg" style="display: none; width: 50%;"></div></center>
         <center><div class="success-msg" id="success-msg" style="display: none; width: 50%;"></div></center>
         <center><div class="error-msg" id="error-msg" style="display: none; width: 50%;"></div></center>
-        <center><div class="note-msg" id="note-msg" style="display: none; width: 60%;"><b>Note</b>: One time slot only let one transaction time set for one address. <br> The minimum distance time between yor transaction time sets must be 5 minuets or can be <b>failed</b></div></center>
+        <center><div class="note-msg" id="note-msg" style="display: none; width: 60%;"><b>Note</b>: One time slot only let one transaction time set for one address. <br> The minimum distance time between yor transaction time sets must be 5 minutes or can be <b>failed</b></div></center>
 
         <div class="page-1" id="page-1">
-            <div class="login" id="login">
-                <input type="file" accept=".JSON,.json" id="uploadwallet" onsubmit="openwallet()" style="display: none;"/>
-                <center><input type="button" class="uploadfile" id="file" name="uploadDompet" value="Click To Import Wallet" onclick="loadwallet()"/></center>
-                <br /><br /><br /><br /><br />
-                <center><a href="https://tokens.arweave.org/" class="getfree">Get Free Token</a></center>
-            </div>
-
             <div class="slogan" id="slogan">
                 <center><div class="title">SCHEDULE TIME TO TRANSFER COIN</div></center>
                 <center><div class="sub-title">ARWEAVE BOUNTY</div></center>
                 <br /><br /><br />  
             </div>
+            <center>
+                <div class="login" id="login">
+                    <input type="file" accept=".JSON,.json" id="uploadwallet" onsubmit="openwallet()" style="display: none;"/>
+                    <input type="button" class="uploadfile" id="file" name="uploadDompet" value="Login" onclick="loadwallet()"/></center>
+                    <center><a href="https://tokens.arweave.org/" class="getfree" id="getfree">Get Free Token</a></center>
+                </div>
+            </center>
 
             <div id="github">
                 <!-- move to project link -->
                 <center>
-                <a class="github-icon" href="https://github.com/" aria-label="Homepage" data-ga-click="(Logged out) Header, go to homepage, icon:logo-wordmark">
+                <a class="github-icon" target="_blank" href="https://github.com/thach4567/Schedule-transferring-coin" aria-label="Homepage" data-ga-click="(Logged out) Header, go to homepage, icon:logo-wordmark">
                     <svg height="48" viewBox="0 0 16 16" version="1.1" width="48" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
                 </a>
                 </center>
@@ -159,11 +211,13 @@
                         <th style="width: 35%;">txid</th>
                     </tr>
                     <tr id="transfer-form" style="display: none;">  
-                        <td><input style="width: 100%;" name="to" id="address" type="text" required/></td>
-                        <td><input style="width: 100%;" name="amount" id="amount" type="number" min="0" required placeholder="AR unit"/></td> 
-                        <td><input style="width: 100%;" name="time_to_transfer" id="time" type="datetime-local" required/></td>
-                        <td><button id="cancel_set_Time" onclick="cancel()">Cancel</button> <br>
-                        <input type="submit" value="Submit" id="submit_time_transfer" onclick="submitTimeTransfer()"></td>
+                        <td><input name="to" id="address" type="text" required/></td>
+                        <td><input name="amount" id="amount" type="number" min="0" required placeholder="AR unit"/></td> 
+                        <td><input name="time_to_transfer" id="time" type="datetime-local" required/></td>
+                        <td><button class="button-transfer" type="submit" id="button-submit" onclick="submitTimeTransfer()">Submit</button>
+                            <br>
+                            <button class="button-transfer" id="button-cancel" onclick="cancel()">Cancel</button>
+                        </td>
                     </tr>
                 </table>
             </center>
@@ -185,7 +239,7 @@
             var clicked = false;
 
             // Show account's transaction history
-            function listAccountHist()
+            function listAccountHistory()
             {
                 if(transactions[wallet_address] !== undefined) 
                 {
@@ -196,7 +250,7 @@
                         data += '<tr>' + (transactions[wallet_address][i].transaction_unsigned.quantity / decimal) + '</tr>';
                         data += '<tr>' + transactions[wallet_address][i].time + '</tr>';
                         data += '<tr class=' + transactions[wallet_address][i].status + ' id=' + transactions[wallet_address][i].id + '-status' + '>' + transactions[wallet_address][i].status + '</tr>';
-                        data += '<tr id=' + transactions[wallet_address][i].id + '>' + transactions[wallet_address][i].tx_hash + '</tr>';
+                        data += '<tr> <a target="_blank" id=' + transactions[wallet_address][i].id + ' href=https://viewblock.io/arweave/tx/' + transactions[wallet_address][i].tx_hash + '>' + transactions[wallet_address][i].tx_hash + '</a> </tr>';
                         table_content += '<tr>' + data + '</tr>';
                     }
                     document.getElementById("tabletimetransfer").innerHTML = table_content;
@@ -234,10 +288,11 @@
                                         document.getElementById('page-1').style.display = 'none';
                                         document.getElementById('page-2').style.display = 'block';
                                         document.getElementById('note-msg').style.display = 'block';
+                                        document.getElementById('github').style.display = 'none';
                                         document.getElementById("Available-balance").innerText="YOUR AVAILABLE BALANCE: " + wallet_balance + " AR";
                                         document.getElementById("Spending").innerText='SPENDING: ' + (Number.parseFloat(wallet_balance) - balance_of[wallet_address]) + ' AR';
                                         // call to list transaction history
-                                        listAccountHist();
+                                        listAccountHistory();
                                     } catch(err) 
                                     {
                                         console.log(err);
@@ -311,12 +366,12 @@
                     balance_of[wallet_address] -= total_to_send;
                     document.getElementById("Available-balance").innerText="YOUR AVAILABLE BALANCE : " + balance_of[wallet_address] + " AR";
                     document.getElementById("Spending").innerText="SPENDING : " + (Number.parseFloat(wallet_balance) - balance_of[wallet_address]).toFixed(12) + " AR";
-                    await createNewTransansactionWithTime(to, amount, time);
+                    createNewTransansactionWithTime(to, amount, time);
                 }
                 clicked = false;
             }
 
-            async function createNewTransansactionWithTime(to, amount, time) 
+            function createNewTransansactionWithTime(to, amount, time) 
             {
                 try 
                 {
@@ -340,8 +395,6 @@
                     {
                         transactions[wallet_address].push(pending_transaction)
                     }
-                    console.log("request time: ", time);
-                    console.log(transactions[wallet_address]);
                     if (time_slot[Date.parse(time)] === undefined) 
                     {
                         time_slot[Date.parse(time)] = [pending_transaction];
@@ -355,7 +408,7 @@
                     data += '<td>' + amount + '</td>';
                     data += '<td>' + time + '</td>';
                     data += '<td class=' + 'pending' + ' id=' + pending_transaction.id + '-status' + '>' + 'pending' + '</td>';
-                    data += '<td id=' + pending_transaction.id + '-txhash' + '>' + '' + '</td>';
+                    data += '<td>' + '<a target="_blank" id=' + pending_transaction.id + '-txhash' + '>' + '</a>'  + '</td>';
                     table_content += '<tr>' + data + '</tr>';
                     document.getElementById("tabletimetransfer").innerHTML = table_content;
                 } catch(err) 
@@ -374,11 +427,9 @@
                         // tried to work on multiple pending transactions at once. But still looking solution.
                         for(let i = 0; i < time_slot[time_now].length; i++) 
                         {  
+                            var temp = time_slot[time_now][i];
                             try 
                             {
-                                var temp = time_slot[time_now][i];
-                                console.log(time_now);
-                                console.log("query recod", temp);
                                 let transaction = await arweave.createTransaction(
                                     {
                                         target: temp.transaction_unsigned.target,
@@ -392,7 +443,8 @@
                                 {
                                     temp.tx_hash = transaction.id;
                                     temp.status = "success";
-                                    document.getElementById(temp.id + "-txhash").innerHTML = temp.tx_hash;                            
+                                    document.getElementById(temp.id + "-txhash").innerHTML = temp.tx_hash;
+                                    document.getElementById(temp.id + "-txhash").setAttribute('href', 'https://viewblock.io/arweave/tx/' + temp.tx_hash);                             
                                     document.getElementById(temp.id + "-status").innerHTML = "success";
                                     document.getElementById(temp.id + "-status").style.color = "#7fff00"
                                 } else 
@@ -401,6 +453,9 @@
                                 }
                             } catch(err)
                             {
+                                balance_of[wallet_address] += arweave.ar.winstonToAr(temp.transaction_unsigned.quantity); 
+                                document.getElementById("Available-balance").innerText="YOUR AVAILABLE BALANCE : " + balance_of[wallet_address] + " AR";
+                                document.getElementById("Spending").innerText="SPENDING : " + (Number.parseFloat(wallet_balance) - balance_of[wallet_address]).toFixed(12) + " AR";
                                 document.getElementById(temp.id + "-status").innerHTML = "failed";
                                 document.getElementById(temp.id + "-status").style.color = "#ff0000"
                                 temp.status = "failed";  
